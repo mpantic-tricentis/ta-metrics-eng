@@ -20,6 +20,17 @@
       <span class="period">Mar 14 – Jun 14, 2026</span>
     </div>
 
+    <div class="load-error" id="load-error" data-testid="load-error" hidden>
+      Failed to load data. Make sure you're accessing this page via a local server (<code>npm run serve</code>), not by opening the file directly.
+    </div>
+
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label for="filter-component" class="filter-label">Component</label>
+        <select id="filter-component" class="filter-select" data-testid="filter-component"></select>
+      </div>
+    </div>
+
     <div class="cards-grid" id="cards-grid" data-testid="cards-grid">
 
       <!-- Pickup Time -->
@@ -70,6 +81,10 @@
         <div class="ladder-legend" data-testid="iteration-ladder"></div>
       </div>
 
+    </div>
+
+    <div class="empty-state" id="empty-state" data-testid="empty-state" hidden>
+      No data available for this selection.
     </div>
 
   </main>

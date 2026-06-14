@@ -89,22 +89,53 @@
     }
   }
 
+  function setEmptyState(empty) {
+    var emptyEl = document.getElementById('empty-state');
+    var gridEl  = document.getElementById('cards-grid');
+    if (emptyEl) emptyEl.hidden = !empty;
+    if (gridEl)  gridEl.hidden  = empty;
+  }
+
   function render(metricsData, benchmarks) {
     var row = metricsData.rows.find(function (r) {
       return r.author_team === state.team && r.component === state.component;
     });
-    if (!row) return;
+    if (!row) {
+      setEmptyState(true);
+      return;
+    }
+    setEmptyState(false);
     CARDS.forEach(function (card) {
       renderCard(card, row, benchmarks);
     });
+  }
+
+  function initFilters(metricsData, benchmarks) {
+    var compSelect = document.getElementById('filter-component');
+    if (compSelect) {
+      metricsData.components.forEach(function (c) {
+        var opt = document.createElement('option');
+        opt.value = c;
+        opt.textContent = c === 'all' ? 'All' : c.charAt(0).toUpperCase() + c.slice(1);
+        compSelect.appendChild(opt);
+      });
+      compSelect.value = state.component;
+      compSelect.addEventListener('change', function () {
+        state.component = this.value;
+        render(metricsData, benchmarks);
+      });
+    }
   }
 
   Promise.all([
     fetch('data/pr-metrics.json').then(function (r) { return r.json(); }),
     fetch('data/benchmarks.json').then(function (r) { return r.json(); })
   ]).then(function (results) {
+    initFilters(results[0], results[1]);
     render(results[0], results[1]);
   }).catch(function (err) {
     console.error('Failed to load metrics data:', err);
+    var el = document.getElementById('load-error');
+    if (el) el.hidden = false;
   });
 })();
