@@ -1,0 +1,15 @@
+{
+  "generated_at": "2026-06-14",
+  "window": { "from": "2026-03-14", "to": "2026-06-14" },
+  "author_teams": ["Our Team"],
+  "components": ["all"],
+  "rows": [
+    {
+      "author_team": "Our Team",
+      "component": "all",
+      "pickup_time_hours":    { "p50": 22.60, "p75": 50.75, "p90": 136.53 },
+      "iteration_time_hours": { "p50":  0.00, "p75": 14.86, "p90":  35.18 },
+      "acceptance_rate_30d":  0.82
+    }
+  ]
+}

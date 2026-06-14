@@ -1,4 +1,13 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
+
+async function interceptData(page: Page) {
+  await page.route('**/data/pr-metrics.json', route =>
+    route.fulfill({ path: 'tests/fixtures/pr-metrics.json' })
+  );
+  await page.route('**/data/benchmarks.json', route =>
+    route.fulfill({ path: 'tests/fixtures/benchmarks.json' })
+  );
+}
 
 test.describe('Slice 1 – Skeleton + Pickup Time', () => {
   test('index page loads with sidebar navigation', async ({ page }) => {
@@ -9,12 +18,14 @@ test.describe('Slice 1 – Skeleton + Pickup Time', () => {
   });
 
   test('PR metrics page title and active nav', async ({ page }) => {
+    await interceptData(page);
     await page.goto('/pr-metrics.html');
     await expect(page).toHaveTitle(/PR Metrics/);
     await expect(page.locator('a.nav-item[href="pr-metrics.html"]')).toHaveClass(/active/);
   });
 
   test('Pickup Time card renders all three percentile rows', async ({ page }) => {
+    await interceptData(page);
     await page.goto('/pr-metrics.html');
     const card = page.getByTestId('card-pickup-time');
     await expect(card).toBeVisible();
@@ -24,6 +35,7 @@ test.describe('Slice 1 – Skeleton + Pickup Time', () => {
   });
 
   test('Pickup Time chips carry tier-needs-focus class', async ({ page }) => {
+    await interceptData(page);
     await page.goto('/pr-metrics.html');
     await expect(page.getByTestId('pickup-p50-chip')).toHaveClass(/tier-needs-focus/);
     await expect(page.getByTestId('pickup-p75-chip')).toHaveClass(/tier-needs-focus/);
@@ -31,6 +43,7 @@ test.describe('Slice 1 – Skeleton + Pickup Time', () => {
   });
 
   test('Pickup Time ladder legend renders all four tiers', async ({ page }) => {
+    await interceptData(page);
     await page.goto('/pr-metrics.html');
     const legend = page.getByTestId('pickup-ladder');
     await expect(legend).toBeVisible();

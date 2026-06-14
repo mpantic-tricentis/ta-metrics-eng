@@ -1,0 +1,29 @@
+{
+  "pickup_time_hours": {
+    "direction": "lower-is-better",
+    "tiers": [
+      { "name": "Elite",       "max": 2  },
+      { "name": "Good",        "max": 4  },
+      { "name": "Fair",        "max": 13 },
+      { "name": "Needs Focus", "max": null }
+    ]
+  },
+  "iteration_time_hours": {
+    "direction": "lower-is-better",
+    "tiers": [
+      { "name": "Elite",       "max": 3  },
+      { "name": "Good",        "max": 13 },
+      { "name": "Fair",        "max": 23 },
+      { "name": "Needs Focus", "max": null }
+    ]
+  },
+  "acceptance_rate_30d": {
+    "direction": "higher-is-better",
+    "tiers": [
+      { "name": "Elite",       "min": 0.95 },
+      { "name": "Good",        "min": 0.92 },
+      { "name": "Fair",        "min": 0.87 },
+      { "name": "Needs Focus", "min": null }
+    ]
+  }
+}

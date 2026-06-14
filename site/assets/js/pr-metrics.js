@@ -1,34 +1,77 @@
 (function () {
-  var TIERS = [
-    { name: 'Elite',       max: 2,    cssClass: 'tier-elite' },
-    { name: 'Good',        max: 4,    cssClass: 'tier-good' },
-    { name: 'Fair',        max: 13,   cssClass: 'tier-fair' },
-    { name: 'Needs Focus', max: null, cssClass: 'tier-needs-focus' }
+  var state = { component: 'all', team: 'Our Team' };
+
+  var CARDS = [
+    {
+      metricKey: 'pickup_time_hours',
+      tbodyId: 'pickup-time-rows',
+      testIdPrefix: 'pickup',
+      ladderTestId: 'pickup-ladder',
+      percentiles: ['p50', 'p75', 'p90'],
+      fmt: function (v) { return v.toFixed(2) + 'h'; }
+    }
   ];
 
-  function gradePickup(value) {
-    for (var i = 0; i < TIERS.length; i++) {
-      if (TIERS[i].max === null || value <= TIERS[i].max) return TIERS[i];
+  function buildLadderText(config) {
+    return config.tiers.map(function (tier, i) {
+      if (config.direction === 'lower-is-better') {
+        return tier.max !== null
+          ? tier.name + ' ≤' + tier.max + 'h'
+          : tier.name + ' >' + config.tiers[i - 1].max + 'h';
+      } else {
+        return tier.min !== null
+          ? tier.name + ' ≥' + Math.round(tier.min * 100) + '%'
+          : tier.name + ' <' + Math.round(config.tiers[i - 1].min * 100) + '%';
+      }
+    }).join(' \xb7 ');
+  }
+
+  function renderPercentileCard(card, row, benchmarks) {
+    var tbody = document.getElementById(card.tbodyId);
+    if (!tbody) return;
+    var config = benchmarks[card.metricKey] || null;
+    var metricRow = row[card.metricKey] || {};
+    var html = '';
+    card.percentiles.forEach(function (p) {
+      var value = metricRow[p];
+      var hasValue = value !== undefined && value !== null;
+      var grade = (hasValue && config) ? gradeValue(card.metricKey, value, benchmarks) : { tier: null, cssClass: '' };
+      html += '<tr>' +
+        '<td>' + p.toUpperCase() + '</td>' +
+        '<td data-testid="' + card.testIdPrefix + '-' + p + '-value">' + (hasValue ? card.fmt(value) : '—') + '</td>' +
+        '<td>' + (grade.tier
+          ? '<span class="tier-chip ' + grade.cssClass + '" data-testid="' + card.testIdPrefix + '-' + p + '-chip">' + grade.tier + '</span>'
+          : '<span>—</span>') + '</td>' +
+        '</tr>';
+    });
+    tbody.innerHTML = html;
+  }
+
+  function renderCard(card, row, benchmarks) {
+    renderPercentileCard(card, row, benchmarks);
+    var config = benchmarks[card.metricKey] || null;
+    var legend = document.querySelector('[data-testid="' + card.ladderTestId + '"]');
+    if (legend && config) {
+      legend.textContent = buildLadderText(config);
     }
-    return TIERS[TIERS.length - 1];
   }
 
-  var data = { p50: 22.60, p75: 50.75, p90: 136.53 };
-  var tbody = document.getElementById('pickup-time-rows');
-  var html = '';
-  ['p50', 'p75', 'p90'].forEach(function (p) {
-    var value = data[p];
-    var grade = gradePickup(value);
-    html += '<tr>' +
-      '<td>' + p.toUpperCase() + '</td>' +
-      '<td data-testid="pickup-' + p + '-value">' + value.toFixed(2) + 'h</td>' +
-      '<td><span class="tier-chip ' + grade.cssClass + '" data-testid="pickup-' + p + '-chip">' + grade.name + '</span></td>' +
-      '</tr>';
+  function render(metricsData, benchmarks) {
+    var row = metricsData.rows.find(function (r) {
+      return r.author_team === state.team && r.component === state.component;
+    });
+    if (!row) return;
+    CARDS.forEach(function (card) {
+      renderCard(card, row, benchmarks);
+    });
+  }
+
+  Promise.all([
+    fetch('data/pr-metrics.json').then(function (r) { return r.json(); }),
+    fetch('data/benchmarks.json').then(function (r) { return r.json(); })
+  ]).then(function (results) {
+    render(results[0], results[1]);
+  }).catch(function (err) {
+    console.error('Failed to load metrics data:', err);
   });
-  tbody.innerHTML = html;
-
-  var legend = document.querySelector('[data-testid="pickup-ladder"]');
-  if (legend) {
-    legend.textContent = 'Elite ≤2h \xb7 Good ≤4h \xb7 Fair ≤13h \xb7 Needs Focus >13h';
-  }
 })();
