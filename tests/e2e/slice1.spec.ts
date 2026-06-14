@@ -12,7 +12,7 @@ async function interceptData(page: Page) {
 test.describe('Slice 1 – Skeleton + Pickup Time', () => {
   test('index page loads with sidebar navigation', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('.sidebar-header')).toContainText('TA Metrics');
+    await expect(page.locator('.brand-star')).toContainText('STAR');
     await expect(page.locator('a.nav-item[href="pr-metrics.html"]')).toBeVisible();
     await expect(page.locator('a.nav-item[title="Coming soon"]')).toBeVisible();
   });
