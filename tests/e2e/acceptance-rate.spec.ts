@@ -49,7 +49,7 @@ async function setup(page: Page, acceptanceRate: number) {
   );
 }
 
-test.describe('Slice 4 – Acceptance Rate card', () => {
+test.describe('Acceptance Rate card', () => {
   test('Acceptance Rate card is visible', async ({ page }) => {
     await setup(page, 0.82);
     await page.goto('/pr-metrics.html');

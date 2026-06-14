@@ -9,7 +9,7 @@ async function interceptData(page: Page) {
   );
 }
 
-test.describe('Slice 3 – Iteration Time card', () => {
+test.describe('Iteration Time card', () => {
   test.beforeEach(async ({ page }) => {
     await interceptData(page);
     await page.goto('/pr-metrics.html');

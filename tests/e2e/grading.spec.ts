@@ -37,7 +37,7 @@ async function setup(page: Page, p50: number, p75: number, p90: number, benchmar
   );
 }
 
-test.describe('Slice 2 – JSON data + gradeValue', () => {
+test.describe('Grading logic (gradeValue)', () => {
   test('Pickup Time values render from JSON', async ({ page }) => {
     await setup(page, 22.60, 50.75, 136.53);
     await page.goto('/pr-metrics.html');

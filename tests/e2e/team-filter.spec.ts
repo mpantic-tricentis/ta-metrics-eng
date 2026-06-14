@@ -11,7 +11,7 @@ async function interceptData(page: any) {
   ]);
 }
 
-test.describe('Slice 7 – Author-team filter', () => {
+test.describe('Team filter', () => {
   test('team dropdown renders with correct options', async ({ page }) => {
     await interceptData(page);
     await page.goto('/pr-metrics.html');

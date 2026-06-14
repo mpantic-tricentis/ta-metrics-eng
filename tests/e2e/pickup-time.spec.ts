@@ -9,7 +9,7 @@ async function interceptData(page: Page) {
   );
 }
 
-test.describe('Slice 1 – Skeleton + Pickup Time', () => {
+test.describe('Page structure and Pickup Time card', () => {
   test('index page loads with sidebar navigation', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('.brand-star')).toContainText('STAR');

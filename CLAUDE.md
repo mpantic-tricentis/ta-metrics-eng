@@ -9,8 +9,8 @@ npm ci                               # Install dependencies
 npm run serve                        # Serve site/ locally at http://localhost:4173
 npm test                             # Run all Playwright tests (headless)
 npm run test:ui                      # Run tests in Playwright UI mode
-npx playwright test tests/e2e/slice2.spec.ts                  # Run a single slice
-npx playwright test tests/e2e/slice2.spec.ts -g "test name"   # Run a single test by name
+npx playwright test tests/e2e/grading.spec.ts                  # Run a single test file
+npx playwright test tests/e2e/grading.spec.ts -g "test name"  # Run a single test by name
 npx playwright install --with-deps   # First-time: install browser binaries
 ```
 
@@ -42,7 +42,7 @@ site/data/benchmarks.json   ─┘
 
 ## Testing
 
-Tests live in `tests/e2e/` as `sliceN.spec.ts` files — each slice covers one feature or card. Playwright intercepts `fetch` calls and serves mock data from `tests/fixtures/` (or inline JSON defined in the test). There are no unit tests; all tests are browser-level e2e.
+Tests live in `tests/e2e/` — one file per feature or card. Playwright intercepts `fetch` calls and serves mock data from `tests/fixtures/` (or inline JSON defined in the test). There are no unit tests; all tests are browser-level e2e.
 
 `data-testid` conventions:
 - Card containers: `card-{pickup,iteration,acceptance-rate}`
@@ -53,12 +53,12 @@ Tests live in `tests/e2e/` as `sliceN.spec.ts` files — each slice covers one f
 
 ## Delivery pattern
 
-Features are delivered as vertical slices — one card or feature per PR, always including its test slice. When adding a new metric card, follow this checklist:
+Features are delivered one card or feature per PR, always including its test file. When adding a new metric card, follow this checklist:
 
 1. Add metric key + thresholds to `site/data/benchmarks.json`
 2. Add field to `site/data/pr-metrics.json` (and fixture files in `tests/fixtures/`)
 3. Add card config to `CARDS` array in `pr-metrics.js`
 4. Add render logic (percentile or single-value)
-5. Add a new `sliceN.spec.ts` covering the card's display and grading
+5. Add a new `tests/e2e/<feature-name>.spec.ts` covering the card's display and grading
 
 Filters follow the same pattern: extend `pr-metrics.json` with the new dimension, add a dropdown to `pr-metrics.html`, populate it in `initFilters()`, and filter by it in `render()`.

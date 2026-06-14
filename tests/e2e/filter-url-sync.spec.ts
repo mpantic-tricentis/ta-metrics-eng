@@ -15,7 +15,7 @@ function params(page: any) {
   return new URL(page.url()).searchParams;
 }
 
-test.describe('Slice 8 – URL filter sync', () => {
+test.describe('Filter URL sync', () => {
   test('default filters are written to URL on load', async ({ page }) => {
     await interceptData(page);
     await page.goto('/pr-metrics.html');

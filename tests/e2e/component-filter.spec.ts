@@ -11,7 +11,7 @@ async function interceptData(page: Page, overrideMetrics?: object) {
   );
 }
 
-test.describe('Slice 6 – Component filter', () => {
+test.describe('Component filter', () => {
   test('component dropdown renders with correct options', async ({ page }) => {
     await interceptData(page);
     await page.goto('/pr-metrics.html');
