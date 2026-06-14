@@ -32,3 +32,26 @@ function gradeValue(metricKey, value, benchmarks) {
     }
   });
 })();
+
+(function () {
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('star-theme', theme);
+    var btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    btn.querySelector('.theme-icon').textContent = theme === 'dark' ? '☀' : '☾';
+    btn.querySelector('.theme-label').textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
+  }
+
+  var saved = localStorage.getItem('star-theme') || 'dark';
+  document.addEventListener('DOMContentLoaded', function () {
+    applyTheme(saved);
+    var btn = document.getElementById('theme-toggle');
+    if (btn) {
+      btn.addEventListener('click', function () {
+        var current = document.documentElement.getAttribute('data-theme');
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+      });
+    }
+  });
+})();

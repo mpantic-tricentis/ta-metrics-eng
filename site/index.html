@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>STAR — State of Test Authoring</title>
   <link rel="stylesheet" href="assets/css/styles.css">
+  <script>!function(){var t=localStorage.getItem('star-theme');document.documentElement.setAttribute('data-theme',t||'dark')}()</script>
 </head>
 <body>
   <nav class="sidebar">
@@ -16,6 +17,12 @@
       <li><a href="pr-metrics.html" class="nav-item">PR Metrics</a></li>
       <li><a href="#" class="nav-item nav-item--disabled" title="Coming soon">Summary</a></li>
     </ul>
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle colour theme">
+        <span class="theme-icon"></span>
+        <span class="theme-label"></span>
+      </button>
+    </div>
   </nav>
   <main class="content">
     <div class="page-header">

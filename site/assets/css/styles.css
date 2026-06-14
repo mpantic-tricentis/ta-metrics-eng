@@ -51,13 +51,14 @@ body {
 
 .sidebar {
   width: 236px;
-  min-height: 100vh;
+  height: 100vh;
+  position: sticky;
+  top: 0;
   background: var(--surface);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   border-right: 1px solid var(--border);
-  position: relative;
   overflow: hidden;
 }
 
@@ -461,4 +462,99 @@ body {
   color: var(--text-muted);
   font-size: 0.9rem;
   margin-top: 16px;
+}
+
+/* ── Light theme ──────────────────────────────────────── */
+
+[data-theme="light"] {
+  --bg:            #F2F5F9;
+  --surface:       #E8EDF4;
+  --card:          #FFFFFF;
+  --card-hover:    #F8FAFC;
+  --border:        #D4DCE8;
+  --border-active: #B8C6D8;
+
+  --accent:        #004C97;
+  --accent-dim:    rgba(0, 76, 151, 0.07);
+  --accent-glow:   0 0 20px rgba(0, 76, 151, 0.09);
+
+  --text:          #181816;
+  --text-muted:    #596070;
+  --text-dim:      #9BA5B3;
+
+  --tier-elite-bg:         rgba(76, 175, 80, 0.10);
+  --tier-elite-text:       #1B5E20;
+  --tier-good-bg:          rgba(0, 119, 182, 0.08);
+  --tier-good-text:        #0077B6;
+  --tier-fair-bg:          rgba(255, 152, 0, 0.10);
+  --tier-fair-text:        #B35A00;
+  --tier-needs-focus-bg:   rgba(211, 47, 47, 0.08);
+  --tier-needs-focus-text: #B71C1C;
+}
+
+[data-theme="light"] .sidebar::before {
+  background-image: radial-gradient(circle, rgba(0, 76, 151, 0.20) 1px, transparent 1px);
+  opacity: 0.45;
+}
+
+[data-theme="light"] .sidebar-brand::after {
+  opacity: 0.35;
+}
+
+[data-theme="light"] .ladder-legend {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+/* ── Theme transitions ────────────────────────────────── */
+
+body,
+.sidebar,
+.metric-card,
+.filter-select,
+.ladder-legend,
+.period,
+.nav-item,
+.empty-state,
+.load-error {
+  transition: background-color 0.25s ease, color 0.2s ease, border-color 0.25s ease;
+}
+
+/* ── Theme toggle ─────────────────────────────────────── */
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 14px 16px 20px;
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px solid var(--border-active);
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  letter-spacing: 0.01em;
+}
+
+.theme-toggle:hover {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.theme-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+  flex-shrink: 0;
 }
