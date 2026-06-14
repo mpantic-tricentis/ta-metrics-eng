@@ -1,7 +1,7 @@
 {
   "generated_at": "2026-06-14",
   "window": { "from": "2026-03-14", "to": "2026-06-14" },
-  "author_teams": ["Our Team"],
+  "author_teams": ["Our Team", "Builder", "Henbosis"],
   "components": ["all", "backend", "frontend"],
   "rows": [
     {
@@ -24,6 +24,13 @@
       "pickup_time_hours":    { "p50": 30.00, "p75": 65.00, "p90": 160.00 },
       "iteration_time_hours": { "p50":  0.50, "p75": 20.00, "p90":  45.00 },
       "acceptance_rate_30d":  0.72
+    },
+    {
+      "author_team": "Builder",
+      "component": "all",
+      "pickup_time_hours":    { "p50":  6.81, "p75": 20.81, "p90":  57.48 },
+      "iteration_time_hours": { "p50":  0.90, "p75": 21.68, "p90":  54.97 },
+      "acceptance_rate_30d":  0.91
     }
   ]
 }

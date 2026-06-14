@@ -111,6 +111,21 @@
   }
 
   function initFilters(metricsData, benchmarks) {
+    var teamSelect = document.getElementById('filter-team');
+    if (teamSelect) {
+      metricsData.author_teams.forEach(function (t) {
+        var opt = document.createElement('option');
+        opt.value = t;
+        opt.textContent = t;
+        teamSelect.appendChild(opt);
+      });
+      teamSelect.value = state.team;
+      teamSelect.addEventListener('change', function () {
+        state.team = this.value;
+        render(metricsData, benchmarks);
+      });
+    }
+
     var compSelect = document.getElementById('filter-component');
     if (compSelect) {
       metricsData.components.forEach(function (c) {
