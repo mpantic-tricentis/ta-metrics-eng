@@ -39,7 +39,7 @@
           ? tier.name + ' ≥' + Math.round(tier.min * 100) + '%'
           : tier.name + ' <' + Math.round(config.tiers[i - 1].min * 100) + '%';
       }
-    }).join(' \xb7 ');
+    }).join(' · ');
   }
 
   function renderPercentileCard(card, row, benchmarks) {
