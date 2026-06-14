@@ -7,13 +7,21 @@ function gradeValue(metricKey, value, benchmarks) {
       ? (tier.max === null || value <= tier.max)
       : (tier.min === null || value >= tier.min);
     if (match) {
+      var nextTip = null;
+      if (i > 0) {
+        var next = config.tiers[i - 1];
+        nextTip = config.direction === 'lower-is-better'
+          ? 'To reach ' + next.name + ': reduce to ≤' + next.max + 'h'
+          : 'To reach ' + next.name + ': increase to ≥' + Math.round(next.min * 100) + '%';
+      }
       return {
         tier: tier.name,
-        cssClass: 'tier-' + tier.name.toLowerCase().replace(/\s+/g, '-')
+        cssClass: 'tier-' + tier.name.toLowerCase().replace(/\s+/g, '-'),
+        nextTip: nextTip
       };
     }
   }
-  return { tier: null, cssClass: '' };
+  return { tier: null, cssClass: '', nextTip: null };
 }
 
 (function () {

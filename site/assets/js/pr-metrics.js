@@ -56,7 +56,7 @@
         '<td>' + p.toUpperCase() + '</td>' +
         '<td data-testid="' + card.testIdPrefix + '-' + p + '-value">' + (hasValue ? card.fmt(value) : '—') + '</td>' +
         '<td>' + (grade.tier
-          ? '<span class="tier-chip ' + grade.cssClass + '" data-testid="' + card.testIdPrefix + '-' + p + '-chip">' + grade.tier + '</span>'
+          ? '<span class="tier-chip ' + grade.cssClass + '" data-testid="' + card.testIdPrefix + '-' + p + '-chip"' + (grade.nextTip ? ' data-tooltip="' + grade.nextTip + '"' : '') + '>' + grade.tier + '</span>'
           : '<span>—</span>') + '</td>' +
         '</tr>';
     });
@@ -72,7 +72,7 @@
     var grade = (hasValue && config) ? gradeValue(card.metricKey, value, benchmarks) : { tier: null, cssClass: '' };
     container.innerHTML = hasValue
       ? '<span class="single-metric-number" data-testid="' + card.testIdPrefix + '-value">' + card.fmt(value) + '</span>' +
-        (grade.tier ? '<span class="tier-chip ' + grade.cssClass + '" data-testid="' + card.testIdPrefix + '-chip">' + grade.tier + '</span>' : '')
+        (grade.tier ? '<span class="tier-chip ' + grade.cssClass + '" data-testid="' + card.testIdPrefix + '-chip"' + (grade.nextTip ? ' data-tooltip="' + grade.nextTip + '"' : '') + '>' + grade.tier + '</span>' : '')
       : '<span>—</span>';
   }
 
