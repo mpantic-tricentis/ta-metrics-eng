@@ -1,5 +1,5 @@
 (function () {
-  var state = { component: 'all', team: 'Our Team' };
+  var state = { component: null, team: null };
 
   var CARDS = [
     {
@@ -119,6 +119,7 @@
         opt.textContent = t;
         teamSelect.appendChild(opt);
       });
+      if (!state.team) state.team = metricsData.author_teams[0];
       teamSelect.value = state.team;
       teamSelect.addEventListener('change', function () {
         state.team = this.value;
@@ -134,6 +135,7 @@
         opt.textContent = c === 'all' ? 'All' : c.charAt(0).toUpperCase() + c.slice(1);
         compSelect.appendChild(opt);
       });
+      if (!state.component) state.component = metricsData.components[0];
       compSelect.value = state.component;
       compSelect.addEventListener('change', function () {
         state.component = this.value;
