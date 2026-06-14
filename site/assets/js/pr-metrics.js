@@ -17,6 +17,14 @@
       ladderTestId: 'iteration-ladder',
       percentiles: ['p50', 'p75', 'p90'],
       fmt: function (v) { return v.toFixed(2) + 'h'; }
+    },
+    {
+      metricKey: 'acceptance_rate_30d',
+      containerId: 'acceptance-rate-value',
+      testIdPrefix: 'acceptance',
+      ladderTestId: 'acceptance-ladder',
+      percentiles: null,
+      fmt: function (v) { return Math.round(v * 100) + '%'; }
     }
   ];
 
@@ -55,8 +63,25 @@
     tbody.innerHTML = html;
   }
 
+  function renderSingleCard(card, row, benchmarks) {
+    var container = document.getElementById(card.containerId);
+    if (!container) return;
+    var config = benchmarks[card.metricKey] || null;
+    var value = row[card.metricKey];
+    var hasValue = value !== undefined && value !== null;
+    var grade = (hasValue && config) ? gradeValue(card.metricKey, value, benchmarks) : { tier: null, cssClass: '' };
+    container.innerHTML = hasValue
+      ? '<span class="single-metric-number" data-testid="' + card.testIdPrefix + '-value">' + card.fmt(value) + '</span>' +
+        (grade.tier ? '<span class="tier-chip ' + grade.cssClass + '" data-testid="' + card.testIdPrefix + '-chip">' + grade.tier + '</span>' : '')
+      : '<span>—</span>';
+  }
+
   function renderCard(card, row, benchmarks) {
-    renderPercentileCard(card, row, benchmarks);
+    if (card.percentiles) {
+      renderPercentileCard(card, row, benchmarks);
+    } else {
+      renderSingleCard(card, row, benchmarks);
+    }
     var config = benchmarks[card.metricKey] || null;
     var legend = document.querySelector('[data-testid="' + card.ladderTestId + '"]');
     if (legend && config) {
