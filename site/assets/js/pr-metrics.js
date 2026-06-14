@@ -9,6 +9,14 @@
       ladderTestId: 'pickup-ladder',
       percentiles: ['p50', 'p75', 'p90'],
       fmt: function (v) { return v.toFixed(2) + 'h'; }
+    },
+    {
+      metricKey: 'iteration_time_hours',
+      tbodyId: 'iteration-time-rows',
+      testIdPrefix: 'iteration',
+      ladderTestId: 'iteration-ladder',
+      percentiles: ['p50', 'p75', 'p90'],
+      fmt: function (v) { return v.toFixed(2) + 'h'; }
     }
   ];
 
