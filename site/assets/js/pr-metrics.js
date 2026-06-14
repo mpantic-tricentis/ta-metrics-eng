@@ -110,7 +110,21 @@
     });
   }
 
+  function readFromURL() {
+    var params = new URLSearchParams(window.location.search);
+    return { team: params.get('team'), component: params.get('component') };
+  }
+
+  function updateURL() {
+    var params = new URLSearchParams();
+    if (state.team)      params.set('team',      state.team);
+    if (state.component) params.set('component', state.component);
+    history.replaceState(null, '', window.location.pathname + '?' + params.toString());
+  }
+
   function initFilters(metricsData, benchmarks) {
+    var fromURL = readFromURL();
+
     var teamSelect = document.getElementById('filter-team');
     if (teamSelect) {
       metricsData.author_teams.forEach(function (t) {
@@ -119,10 +133,13 @@
         opt.textContent = t;
         teamSelect.appendChild(opt);
       });
-      if (!state.team) state.team = metricsData.author_teams[0];
+      var urlTeam = fromURL.team;
+      state.team = (urlTeam && metricsData.author_teams.indexOf(urlTeam) !== -1)
+        ? urlTeam : metricsData.author_teams[0];
       teamSelect.value = state.team;
       teamSelect.addEventListener('change', function () {
         state.team = this.value;
+        updateURL();
         render(metricsData, benchmarks);
       });
     }
@@ -135,13 +152,18 @@
         opt.textContent = c === 'all' ? 'All' : c.charAt(0).toUpperCase() + c.slice(1);
         compSelect.appendChild(opt);
       });
-      if (!state.component) state.component = metricsData.components[0];
+      var urlComp = fromURL.component;
+      state.component = (urlComp && metricsData.components.indexOf(urlComp) !== -1)
+        ? urlComp : metricsData.components[0];
       compSelect.value = state.component;
       compSelect.addEventListener('change', function () {
         state.component = this.value;
+        updateURL();
         render(metricsData, benchmarks);
       });
     }
+
+    updateURL();
   }
 
   Promise.all([
